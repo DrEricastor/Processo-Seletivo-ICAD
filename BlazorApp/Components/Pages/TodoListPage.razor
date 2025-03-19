@@ -1,0 +1,35 @@
+﻿@page "/todoList"
+@rendermode InteractiveServer
+
+<h3>Lista de Tarefas</h3> <p />
+
+<div class="accordion" id="accordionExample">
+    @foreach (TodoItemCompleto curTodo in TodoList.Get()) {
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingOne">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="show" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+        
+        <input type="checkbox" @bind=curTodo.isDone /> &nbsp @curTodo.Title 
+      
+      </button>
+    </h2>
+    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+
+        <strong>Descrição: </strong>@curTodo.Description <p />
+        <strong>Data de Entrega: </strong> @curTodo.DueDate.ToString() <p />
+      
+      </div>
+    </div>
+  </div>
+  }
+</div>
+
+<ul>
+    @foreach (TodoItemCompleto todo in TodoList.Get())
+    {
+        <li>
+            @todo.Title
+        </li>
+    }
+</ul>

@@ -1,0 +1,34 @@
+@page "/newTodo"
+@rendermode InteractiveServer
+
+<h3>Adicionar nova Tarefa</h3>
+
+Titulo:      <input autofocus @bind="newTodoTitle"/> <p />
+Descrição:   <input @bind="newTodoDesc"/> <p />
+Data De Entrega: <input type="datetime-local" @bind="newTodoDueDate"/> <p />
+Dificuldade:   <input @bind="newTodoDificulty"/> <p />
+
+
+<button @onclick="addTodo">Adicionar tarefa! </button>
+
+@code {
+    private List<TodoItem> todos = new();
+    string newTodoTitle = "";
+    string newTodoDesc = "";
+    DateTime newTodoDueDate = DateTime.Now;
+    string newTodoUser = "";
+    string newTodoDificulty = "";
+
+
+    void addTodo() {
+        TodoList.Add(new TodoItemCompleto{
+            Title = newTodoTitle,
+            Description = newTodoDesc,
+            DueDate = newTodoDueDate,
+            User = newTodoUser,
+            Difficulty = newTodoDificulty,
+            isDone = false
+        });
+    }
+}
+

@@ -1,0 +1,33 @@
+using System.ComponentModel;
+
+public class TodoItem
+{
+    public string? Title { get; set; }
+    public bool IsDone { get; set; } = false;
+}
+
+public class TodoItemCompleto
+{
+    public int id { get; set;}
+    public string Title { get; set;} = "";
+    public string Description { get; set;} = "";
+    public DateTime? DueDate { get; set;}
+    public string User { get; set;} = ""; //TODO
+    public string Difficulty { get; set;} = "";
+
+    public bool isDone {get; set;} = false;
+}
+
+public static class TodoList
+{
+    private static List<TodoItemCompleto> Tarefas = new List<TodoItemCompleto>{};
+
+    public static void Add(TodoItemCompleto item) {
+        Tarefas.Add(item);
+        return;
+    }
+
+    public static List<TodoItemCompleto> Get() {
+        return Tarefas;
+    }
+}
