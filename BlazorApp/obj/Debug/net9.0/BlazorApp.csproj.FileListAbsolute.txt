@@ -77,3 +77,4 @@ c:\Dev\Processo Seletivo ICAD\BlazorApp\obj\Debug\net9.0\refint\BlazorApp.dll
 c:\Dev\Processo Seletivo ICAD\BlazorApp\obj\Debug\net9.0\BlazorApp.pdb
 c:\Dev\Processo Seletivo ICAD\BlazorApp\obj\Debug\net9.0\BlazorApp.genruntimeconfig.cache
 c:\Dev\Processo Seletivo ICAD\BlazorApp\obj\Debug\net9.0\ref\BlazorApp.dll
+C:\Dev\Processo Seletivo ICAD\BlazorApp\obj\Debug\net9.0\BlazorApp.sourcelink.json

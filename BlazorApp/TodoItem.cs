@@ -8,14 +8,18 @@ public class TodoItem
 
 public class TodoItemCompleto
 {
-    public int id { get; set;}
+    public Guid Id {get; private set;}
     public string Title { get; set;} = "";
     public string Description { get; set;} = "";
     public DateTime? DueDate { get; set;}
     public string User { get; set;} = ""; //TODO
     public string Difficulty { get; set;} = "";
-
     public bool isDone {get; set;} = false;
+
+    public TodoItemCompleto()
+    {
+        this.Id = Guid.NewGuid();
+    }
 }
 
 public static class TodoList

@@ -9,7 +9,7 @@ Data De Entrega: <input type="datetime-local" @bind="newTodoDueDate"/> <p />
 Dificuldade:   <input @bind="newTodoDificulty"/> <p />
 
 
-<button @onclick="addTodo">Adicionar tarefa! </button>
+<button class="btn btn-primary" @onclick="addTodo">Adicionar tarefa! </button>
 
 @code {
     private List<TodoItem> todos = new();

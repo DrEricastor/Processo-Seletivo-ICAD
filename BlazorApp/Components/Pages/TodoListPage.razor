@@ -1,28 +1,37 @@
 ﻿@page "/todoList"
 @rendermode InteractiveServer
+@using System.Globalization
 
-<h3>Lista de Tarefas</h3> <p />
+<h3>Lista de Tarefas</h3>
 
-<div class="accordion" id="accordionExample">
-    @foreach (TodoItemCompleto curTodo in TodoList.Get()) {
-  <div class="accordion-item">
-    <h2 class="accordion-header" id="headingOne">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="show" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-        
-        <input type="checkbox" @bind=curTodo.isDone /> &nbsp @curTodo.Title 
-      
-      </button>
-    </h2>
-    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-      <div class="accordion-body">
 
-        <strong>Descrição: </strong>@curTodo.Description <p />
-        <strong>Data de Entrega: </strong> @curTodo.DueDate.ToString() <p />
-      
-      </div>
-    </div>
-  </div>
-  }
+<div class="accordion" id="accordionExample2">
+    @foreach (var curTodo in TodoList.Get()) {
+        var collapseId = $"coll-{curTodo.Id}";
+        var headingId = $"hea-{curTodo.Id}";
+
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="@headingId">
+                <button class="accordion-button collapsed" type="button" 
+                        data-bs-toggle="collapse" data-bs-target="#@collapseId"
+                        aria-expanded="false" aria-controls="@collapseId">
+                
+                    
+                    <input type="checkbox" @bind="curTodo.isDone" /> &nbsp; @curTodo.Title
+
+                </button>
+            </h2>
+            <div id="@collapseId" class="accordion-collapse collapsed" 
+            aria-labelledby="@headingId" data-bs-parent="#accordionExample2">
+                <div class="accordion-body">
+
+                    <strong>Descrição:</strong> @curTodo.Description <br />
+                    <strong>Data de Entrega:</strong> @curTodo.DueDate.ToString() <br />
+                    
+                </div>
+            </div>
+        </div>
+    }
 </div>
 
 <ul>
