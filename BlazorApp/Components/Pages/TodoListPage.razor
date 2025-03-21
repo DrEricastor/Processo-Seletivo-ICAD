@@ -2,43 +2,78 @@
 @rendermode InteractiveServer
 @using System.Globalization
 
-<h3>Lista de Tarefas</h3>
+@if (!Auth.isAuthd) 
+{
+    <p>Usuário não autenticado!</p>
+} 
+else 
+{
+    <h3>Lista de Tarefas</h3>
 
+    <div class="accordion" id="mainAcc">
+        @foreach (var curTodo in TodoList.Get()) 
+        {
+            var collapseId = $"coll-{curTodo.Id}";
+            var headingId = $"hea-{curTodo.Id}";
+            var itemId = $"it-{curTodo.Id}";
 
-<div class="accordion" id="accordionExample2">
-    @foreach (var curTodo in TodoList.Get()) {
-        var collapseId = $"coll-{curTodo.Id}";
-        var headingId = $"hea-{curTodo.Id}";
-
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="@headingId">
-                <button class="accordion-button collapsed" type="button" 
-                        data-bs-toggle="collapse" data-bs-target="#@collapseId"
-                        aria-expanded="false" aria-controls="@collapseId">
-                
-                    
-                    <input type="checkbox" @bind="curTodo.isDone" /> &nbsp; @curTodo.Title
-
-                </button>
-            </h2>
-            <div id="@collapseId" class="accordion-collapse collapsed" 
-            aria-labelledby="@headingId" data-bs-parent="#accordionExample2">
-                <div class="accordion-body">
-
-                    <strong>Descrição:</strong> @curTodo.Description <br />
-                    <strong>Data de Entrega:</strong> @curTodo.DueDate.ToString() <br />
-                    
+            <div class="accordion-item" id="@itemId">
+                <h2 class="accordion-header" id="@headingId">
+                    <button class="accordion-button collapsed" type="button" 
+                            data-bs-toggle="collapse" data-bs-target="#@collapseId"
+                            aria-expanded="false" aria-controls="@collapseId">
+                        <input type="checkbox" @bind="curTodo.isDone" /> &nbsp; @curTodo.Title
+                    </button>
+                </h2>
+                <div id="@collapseId" class="accordion-collapse " 
+                     aria-labelledby="@headingId" data-bs-parent="#@itemId">
+                    <div class="accordion-body">
+                        
+                        @if (!editModes.ContainsKey(curTodo.Id) || !editModes[curTodo.Id]) 
+                        {
+                            <strong>Descrição:&nbsp;</strong> @curTodo.Description <br />
+                            <strong>Data de Entrega:&nbsp;</strong> @curTodo.DueDate.ToString() <br />
+                            <strong>Dificuldade:&nbsp;</strong> @curTodo.Difficulty <br />
+                            <p /><button @onclick="() => ToggleEditMode(curTodo.Id)">Editar</button> <i>&nbsp;</i>
+                        } 
+                        else 
+                        {
+                            <b>Titulo:&nbsp;</b>      <input autofocus class="form-control input-sm" @bind="curTodo.Title"/> <p />
+                            <b>Descrição:&nbsp;</b>   <textarea class="form-control input-lg" style="height:85px" @bind="curTodo.Description"/> <p />
+                            <b>Data De Entrega:&nbsp;</b> <input class="form-control input-sm" type="datetime-local" @bind="curTodo.DueDate"/> <p />
+                            <b>Dificuldade:&nbsp;</b>   <input class="form-control input-sm" @bind="curTodo.Difficulty"/> <p />
+                            <p /><button @onclick="() => ToggleEditMode(curTodo.Id)">Salvar</button> <i>&nbsp;</i>
+                        }
+                        
+                        <button @onclick="() => removeTask(curTodo)">Deletar</button>
+                    </div>
                 </div>
             </div>
-        </div>
-    }
-</div>
+        }
+    </div>
+}
 
-<ul>
-    @foreach (TodoItemCompleto todo in TodoList.Get())
+@code 
+{
+    Dictionary<Guid, bool> editModes = new();
+
+    void ToggleEditMode(Guid taskId) 
     {
-        <li>
-            @todo.Title
-        </li>
+        if (!editModes.ContainsKey(taskId))
+        {
+            editModes[taskId] = true;
+        }
+        else 
+        {
+            editModes[taskId] = !editModes[taskId];
+        }
     }
-</ul>
+
+    void removeTask(TodoItemCompleto curTodo) 
+    {
+        if (curTodo.isDone) 
+        {
+            TodoList.Remove(curTodo);
+        }
+    }
+}

@@ -1,7 +1,14 @@
 ﻿@page "/Home"
 
-<PageTitle>Home</PageTitle>
+@if (!Auth.isAuthd) {
+    
+    <p>Usuário não autentificado!</p>
+} else {
 
-<h1>Hello, world!</h1>
+    <PageTitle>Home</PageTitle>
 
-Welcome to your new app.
+    <h1>Taskerr</h1>
+
+    <p><i>O seu Hub de Tarefas!</i></p>
+    <p>para a sua segurança, só é possível remover Tarefas que estejam completas!</p>
+    }

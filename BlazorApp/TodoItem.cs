@@ -1,9 +1,14 @@
 using System.ComponentModel;
 
+
 public class TodoItem
 {
     public string? Title { get; set; }
     public bool IsDone { get; set; } = false;
+}
+
+public static class Auth {
+    static public bool isAuthd = false;
 }
 
 public class TodoItemCompleto
@@ -26,12 +31,19 @@ public static class TodoList
 {
     private static List<TodoItemCompleto> Tarefas = new List<TodoItemCompleto>{};
 
+    public static List<TodoItemCompleto> Get() {
+        return Tarefas;
+    }
+    
     public static void Add(TodoItemCompleto item) {
         Tarefas.Add(item);
         return;
     }
 
-    public static List<TodoItemCompleto> Get() {
-        return Tarefas;
+    public static void Remove(TodoItemCompleto item) {
+        Tarefas.Remove(item);
+        return;
     }
+
+    
 }

@@ -32,10 +32,17 @@ Senha<p />
     string adminPassword = "Admin@ICAD!";
     bool lastAttemptSucessfull = true;
 
+    protected override async Task OnInitializedAsync()
+    {
+    Auth.isAuthd=false;
+    }
+
     void tryLogin() {
         if (inUsername.Equals(adminUsername) && inPassword.Equals(adminPassword)) {
             
+            Auth.isAuthd = true;
             _navigationManager.NavigateTo("/home");
+            
             return;
         }
         else {

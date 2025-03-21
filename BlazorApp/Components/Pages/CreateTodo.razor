@@ -1,34 +1,38 @@
 @page "/newTodo"
 @rendermode InteractiveServer
+@if (!Auth.isAuthd) {
+    
+    <p>Usuário não autentificado!</p>
+} else {
+    <h3>Adicionar nova Tarefa</h3>
 
-<h3>Adicionar nova Tarefa</h3>
-
-Titulo:      <input autofocus @bind="newTodoTitle"/> <p />
-Descrição:   <input @bind="newTodoDesc"/> <p />
-Data De Entrega: <input type="datetime-local" @bind="newTodoDueDate"/> <p />
-Dificuldade:   <input @bind="newTodoDificulty"/> <p />
-
-
-<button class="btn btn-primary" @onclick="addTodo">Adicionar tarefa! </button>
-
-@code {
-    private List<TodoItem> todos = new();
-    string newTodoTitle = "";
-    string newTodoDesc = "";
-    DateTime newTodoDueDate = DateTime.Now;
-    string newTodoUser = "";
-    string newTodoDificulty = "";
+    <p>Titulo:</p>      <input autofocus class="form-control input-sm" @bind="newTodoTitle"/> <p />
+    <p>Descrição:</p>   <textarea class="form-control input-lg" style="height:85px" @bind="newTodoDesc"/> <p />
+    <p>Data De Entrega:</p> <input class="form-control input-sm" type="datetime-local" @bind="newTodoDueDate"/> <p />
+    <p>Dificuldade:</p>   <input class="form-control input-sm" @bind="newTodoDificulty"/> <p />
 
 
-    void addTodo() {
-        TodoList.Add(new TodoItemCompleto{
-            Title = newTodoTitle,
-            Description = newTodoDesc,
-            DueDate = newTodoDueDate,
-            User = newTodoUser,
-            Difficulty = newTodoDificulty,
-            isDone = false
-        });
+    <button class="btn btn-primary" @onclick="addTodo">Adicionar tarefa! </button>
+
+    @code {
+        private List<TodoItem> todos = new();
+        string newTodoTitle = "";
+        string newTodoDesc = "";
+        DateTime newTodoDueDate = DateTime.Now;
+        string newTodoUser = "";
+        string newTodoDificulty = "";
+
+
+        void addTodo() {
+            TodoList.Add(new TodoItemCompleto{
+                Title = newTodoTitle,
+                Description = newTodoDesc,
+                DueDate = newTodoDueDate,
+                User = newTodoUser,
+                Difficulty = newTodoDificulty,
+                isDone = false
+            });
+        }
     }
 }
 
