@@ -1,10 +1,13 @@
 using BlazorApp.Components;
+using BlazorApp.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddDbContext<DataContext>(options => /*options.useSqlServer*/)
 
 var app = builder.Build();
 

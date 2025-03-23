@@ -1,0 +1,15 @@
+﻿@page "/todoList"
+@rendermode InteractiveServer
+
+<h3>Lista de Tarefas</h3>
+
+<ul>
+    @foreach (var todo in TodoList.Get())
+    {
+        <li>
+            <input type="checkbox" @bind="todo.IsDone" />
+            <input @bind="todo.Title"_blank />
+        </li>
+    }
+</ul>
+
