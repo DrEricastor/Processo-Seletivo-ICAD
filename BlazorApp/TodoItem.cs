@@ -1,15 +1,11 @@
 using System.ComponentModel;
 
 
-public class TodoItem
-{
-    public string? Title { get; set; }
-    public bool IsDone { get; set; } = false;
-}
-
-public static class Auth {
-    static public bool isAuthd = false;
-}
+// public class TodoItem
+// {
+//     public string? Title { get; set; }
+//     public bool IsDone { get; set; } = false;
+// }
 
 public class TodoItemCompleto
 {
@@ -17,7 +13,7 @@ public class TodoItemCompleto
     public string Title { get; set;} = "";
     public string Description { get; set;} = "";
     public DateTime? DueDate { get; set;}
-    public string User { get; set;} = ""; //TODO
+    public Guid User { get; set;} = Guid.AllBitsSet;
     public string Difficulty { get; set;} = "";
     public bool isDone {get; set;} = false;
 

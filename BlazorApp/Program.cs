@@ -1,12 +1,30 @@
 using BlazorApp.Components;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using BlazorApp;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<TaskerrContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<TarefaService>();
+builder.Services.AddScoped<AuthService>();
+
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<TaskerrContext>();
+
+    TaskerrContext.Initialize(services, context); // Chama o método de seed para adicionar o usuário admin
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -16,8 +34,9 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
 
+
+app.UseHttpsRedirection();
 
 app.UseAntiforgery();
 

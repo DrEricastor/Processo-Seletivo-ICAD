@@ -2,51 +2,78 @@
 @layout LoginLayout
 @rendermode InteractiveServer
 
-
 @using BlazorApp.Components.Layout;
-@inject NavigationManager _navigationManager;
-
+@inject NavigationManager _navigationManager
+@inject AuthService _authService // Injeção do AuthService para autenticação no banco de dados
 
 <PageTitle>Login</PageTitle>
 
-<h1>Lista-de-tarefa-inator</h1>
+<h1>Taskerr Login</h1>
 
 Faça Login abaixo para acessar suas tarefas. <p />
 
 Username<p />
-<input @bind="inUsername"/> <p />
+<input @bind="inUsername" /> <p />
 
 Senha<p />
-<input type="password" @bind="inPassword "/> <p /> <p />
+<input type="password" @bind="inPassword" /> <p /> <p />
 
+<button @onclick="tryLogin">Fazer Login</button>
+<button @onclick="tryRegister">Criar Conta</button>
 
-<button class="btn btn-primary" @onclick="tryLogin">Fazer Login</button>
 @if (!lastAttemptSucessfull) {
-    <p>credenciais invalidas!</p>
+    <p class="text-danger">Credenciais inválidas! Numero de tentativas até agora: #@tentativas</p>
 }
+
+
 
 @code {
     string inUsername = "";
     string inPassword = "";
-    string adminUsername = "admin";
-    string adminPassword = "Admin@ICAD!";
     bool lastAttemptSucessfull = true;
+    int tentativas = 0;
 
-    protected override async Task OnInitializedAsync()
-    {
-    Auth.isAuthd=false;
-    }
+    // Método chamado ao tentar fazer login
+    async void tryRegister() {
+        var curUser = await _authService.Register(inUsername, inPassword);
 
-    void tryLogin() {
-        if (inUsername.Equals(adminUsername) && inPassword.Equals(adminPassword)) {
-            
+        if (curUser != null) {
             Auth.isAuthd = true;
+            Auth.curUser = curUser;
+
+            // Navegue para a página principal após o login bem-sucedido
             _navigationManager.NavigateTo("/home");
-            
-            return;
         }
         else {
             lastAttemptSucessfull = false;
+            tentativas++;
         }
+    }
+
+    async Task tryLogin()
+    {
+        var usuario = await _authService.Login(inUsername, inPassword);
+
+        if (usuario != null)
+        {
+            // Se a autenticação for bem-sucedida, armazene o estado de login
+            Auth.isAuthd = true;
+            Auth.curUser = usuario;
+
+            // Navegue para a página principal após o login bem-sucedido
+            _navigationManager.NavigateTo("/home");
+        }
+        else
+        {
+            // Caso as credenciais estejam incorretas
+            lastAttemptSucessfull = false;
+            tentativas++;
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Definir o estado inicial de autenticação
+        Auth.isAuthd = false;
     }
 }

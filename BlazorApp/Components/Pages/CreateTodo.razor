@@ -1,5 +1,7 @@
 @page "/newTodo"
 @rendermode InteractiveServer
+@inject TarefaService TarefaService
+
 @if (!Auth.isAuthd) {
     
     <p>Usuário não autentificado!</p>
@@ -9,22 +11,30 @@
     <p>Titulo:</p>      <input autofocus class="form-control input-sm" @bind="newTodoTitle"/> <p />
     <p>Descrição:</p>   <textarea class="form-control input-lg" style="height:85px" @bind="newTodoDesc"/> <p />
     <p>Data De Entrega:</p> <input class="form-control input-sm" type="datetime-local" @bind="newTodoDueDate"/> <p />
-    <p>Dificuldade:</p>   <input class="form-control input-sm" @bind="newTodoDificulty"/> <p />
-
+    
+    <p>Dificuldade:</p>
+    <InputSelect class="" @bind-Value="newTodoDificulty">
+        <option value="1">Fácil</option>
+        <option value="2">Média</option>
+        <option value="3">Difícil</option>
+        <option value="4">Muito Difícil</option>
+    </InputSelect> <p></p>
 
     <button class="btn btn-primary" @onclick="addTodo">Adicionar tarefa! </button>
 
     @code {
-        private List<TodoItem> todos = new();
+
+        
+        private List<TodoItemCompleto> todos = new();
         string newTodoTitle = "";
         string newTodoDesc = "";
         DateTime newTodoDueDate = DateTime.Now;
-        string newTodoUser = "";
+        Guid newTodoUser =Auth.curUser.Id;
         string newTodoDificulty = "";
 
 
-        void addTodo() {
-            TodoList.Add(new TodoItemCompleto{
+        async void addTodo() {
+            await TarefaService.AddTarefaAsync(new TodoItemCompleto{
                 Title = newTodoTitle,
                 Description = newTodoDesc,
                 DueDate = newTodoDueDate,
