@@ -1,5 +1,7 @@
 @page "/newTodo"
 @rendermode InteractiveServer
+@inject TarefaService TarefaService
+
 @if (!Auth.isAuthd) {
     
     <p>Usuário não autentificado!</p>
@@ -15,7 +17,9 @@
     <button class="btn btn-primary" @onclick="addTodo">Adicionar tarefa! </button>
 
     @code {
-        private List<TodoItem> todos = new();
+
+        
+        private List<TodoItemCompleto> todos = new();
         string newTodoTitle = "";
         string newTodoDesc = "";
         DateTime newTodoDueDate = DateTime.Now;
@@ -23,8 +27,8 @@
         string newTodoDificulty = "";
 
 
-        void addTodo() {
-            TodoList.Add(new TodoItemCompleto{
+        async void addTodo() {
+            await TarefaService.AddTarefaAsync(new TodoItemCompleto{
                 Title = newTodoTitle,
                 Description = newTodoDesc,
                 DueDate = newTodoDueDate,

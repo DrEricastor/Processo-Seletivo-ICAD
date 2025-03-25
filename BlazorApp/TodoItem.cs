@@ -1,11 +1,11 @@
 using System.ComponentModel;
 
 
-public class TodoItem
-{
-    public string? Title { get; set; }
-    public bool IsDone { get; set; } = false;
-}
+// public class TodoItem
+// {
+//     public string? Title { get; set; }
+//     public bool IsDone { get; set; } = false;
+// }
 
 public static class Auth {
     static public bool isAuthd = false;
