@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Dev\\Processo Seletivo ICAD\\BlazorApp\\BlazorApp.csproj": {}
+    "C:\\Dev\\Processo Seletivo ICAD\\BlazorApp\\BlazorApp.csproj": {}
   },
   "projects": {
-    "c:\\Dev\\Processo Seletivo ICAD\\BlazorApp\\BlazorApp.csproj": {
+    "C:\\Dev\\Processo Seletivo ICAD\\BlazorApp\\BlazorApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Dev\\Processo Seletivo ICAD\\BlazorApp\\BlazorApp.csproj",
+        "projectUniqueName": "C:\\Dev\\Processo Seletivo ICAD\\BlazorApp\\BlazorApp.csproj",
         "projectName": "BlazorApp",
-        "projectPath": "c:\\Dev\\Processo Seletivo ICAD\\BlazorApp\\BlazorApp.csproj",
+        "projectPath": "C:\\Dev\\Processo Seletivo ICAD\\BlazorApp\\BlazorApp.csproj",
         "packagesPath": "C:\\Users\\ernes\\.nuget\\packages\\",
-        "outputPath": "c:\\Dev\\Processo Seletivo ICAD\\BlazorApp\\obj\\",
+        "outputPath": "C:\\Dev\\Processo Seletivo ICAD\\BlazorApp\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

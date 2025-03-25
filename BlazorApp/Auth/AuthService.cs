@@ -1,6 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity; // Para hashing de senhas
 
+public static class Auth {
+    static public bool isAuthd = false;
+    static public Usuario curUser;
+}
 public class AuthService
 {
     private readonly TaskerrContext _context;
@@ -15,6 +19,8 @@ public class AuthService
     // Método de login
     public async Task<Usuario> Login(string nome, string senha)
     {
+        Console.WriteLine("My debug output.");
+
         // Verifica se existe um usuário com o nome fornecido
         var usuario = await _context.Usuarios
             .FirstOrDefaultAsync(u => u.Nome == nome);

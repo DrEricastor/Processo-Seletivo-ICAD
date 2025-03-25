@@ -7,10 +7,6 @@ using System.ComponentModel;
 //     public bool IsDone { get; set; } = false;
 // }
 
-public static class Auth {
-    static public bool isAuthd = false;
-}
-
 public class TodoItemCompleto
 {
     public Guid Id {get; private set;}

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "dv0qghIw5TE=",
+  "dgSpecHash": "1iaQQ8pcefY=",
   "success": true,
-  "projectFilePath": "c:\\Dev\\Processo Seletivo ICAD\\BlazorApp\\BlazorApp.csproj",
+  "projectFilePath": "C:\\Dev\\Processo Seletivo ICAD\\BlazorApp\\BlazorApp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ernes\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\ernes\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 public class TaskerrContext : DbContext
@@ -16,11 +17,17 @@ public class TaskerrContext : DbContext
         // Verifica se o usuário admin já existe, caso contrário, cria
         if (!context.Usuarios.Any())
         {
+            PasswordHasher<Usuario> _passwordHasher = new PasswordHasher<Usuario>();
+
             var usuarioAdmin = new Usuario
             {
                 Nome = "admin",
-                Senha = "Admin@ICAD!" // Defina a senha do usuário admin
+                Senha = "" // Defina a senha do usuário admin
             };
+
+            string hashedPassword = _passwordHasher.HashPassword(usuarioAdmin, "Admin@ICAD!");
+
+            usuarioAdmin.Senha = hashedPassword;
 
             context.Usuarios.Add(usuarioAdmin);
             context.SaveChanges();  // Salva no banco de dados

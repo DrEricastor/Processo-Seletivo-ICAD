@@ -18,7 +18,7 @@ Username<p />
 Senha<p />
 <input type="password" @bind="inPassword" /> <p /> <p />
 
-<button class="btn btn-primary" @onclick="tryLogin">Fazer Login</button>
+<button @onclick="tryLogin">Fazer Login</button>
 @if (!lastAttemptSucessfull) {
     <p class="text-danger">Credenciais inválidas!</p>
 }
@@ -37,6 +37,7 @@ Senha<p />
         {
             // Se a autenticação for bem-sucedida, armazene o estado de login
             Auth.isAuthd = true;
+            Auth.curUser = usuario;
 
             // Navegue para a página principal após o login bem-sucedido
             _navigationManager.NavigateTo("/home");
