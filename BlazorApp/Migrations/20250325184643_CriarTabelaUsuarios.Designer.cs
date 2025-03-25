@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorApp.Migrations
 {
     [DbContext(typeof(TaskerrContext))]
-    [Migration("20250325000853_Inicial")]
-    partial class Inicial
+    [Migration("20250325184643_CriarTabelaUsuarios")]
+    partial class CriarTabelaUsuarios
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -45,9 +45,8 @@ namespace BlazorApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("User")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("User")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("isDone")
                         .HasColumnType("bit");
@@ -55,6 +54,25 @@ namespace BlazorApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TodoItems");
+                });
+
+            modelBuilder.Entity("Usuario", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Senha")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Usuarios");
                 });
 #pragma warning restore 612, 618
         }

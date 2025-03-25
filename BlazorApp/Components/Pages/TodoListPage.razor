@@ -23,7 +23,7 @@ else
                     <button class="accordion-button collapsed" type="button" 
                             data-bs-toggle="collapse" data-bs-target="#@collapseId"
                             aria-expanded="false" aria-controls="@collapseId">
-                        <input type="checkbox" @bind="curTodo.isDone" /> &nbsp; @curTodo.Title
+                        <input type="checkbox" @bind="curTodo.isDone" /> &nbsp; @curTodo.Title &nbsp; | @retReadableDifficulty(curTodo.Difficulty)
                     </button>
                 </h2>
                 <div id="@collapseId" class="accordion-collapse " 
@@ -34,7 +34,6 @@ else
                         {
                             <strong>Descrição:&nbsp;</strong> @curTodo.Description <br />
                             <strong>Data de Entrega:&nbsp;</strong> @curTodo.DueDate.ToString() <br />
-                            <strong>Dificuldade:&nbsp;</strong> @curTodo.Difficulty <br />
                             <p /><button @onclick="() => ToggleEditMode(curTodo.Id)">Editar</button> <i>&nbsp;</i>
                         } 
                         else 
@@ -42,7 +41,15 @@ else
                             <b>Titulo:&nbsp;</b>      <input autofocus class="form-control input-sm" @bind="curTodo.Title"/> <p />
                             <b>Descrição:&nbsp;</b>   <textarea class="form-control input-lg" style="height:85px" @bind="curTodo.Description"/> <p />
                             <b>Data De Entrega:&nbsp;</b> <input class="form-control input-sm" type="datetime-local" @bind="curTodo.DueDate"/> <p />
-                            <b>Dificuldade:&nbsp;</b>   <input class="form-control input-sm" @bind="curTodo.Difficulty"/> <p />
+                            
+                            <p>Dificuldade:</p> //  <input class="form-control input-sm" @bind="newTodoDificulty"/> <p />
+                            <InputSelect class="" @bind-Value="curTodo.Difficulty">
+                                <option value="1">Fácil</option>
+                                <option value="2">Média</option>
+                                <option value="3">Difícil</option>
+                                <option value="4">Muito Difícil</option>
+                            </InputSelect> <p></p>
+
                             <p /><button @onclick="() => SaveTask(curTodo)">Salvar</button> <i>&nbsp;</i>
                         }
                         
@@ -59,11 +66,22 @@ else
     // Variáveis
     Dictionary<Guid, bool> editModes = new();
     List<TodoItemCompleto> tarefas = new(); // Lista para armazenar as tarefas do banco de dados.
+    
+    public string retReadableDifficulty(string val) {
+        switch(val) {
+            case "1": return "Fácil";
+            case "2": return "Médio";
+            case "3": return "Difícil";
+            case "4": return "Muito Difícil";
+            default: return "não Identificado";
+        }
+    }
+    
 
     // Método para carregar as tarefas do banco de dados
     protected override async Task OnInitializedAsync()
     {
-        tarefas = await Tarefas.GetTarefasAsync(); // Obtendo as tarefas do banco
+        tarefas = await Tarefas.GetTarefasByUserAsync(Auth.curUser.Id); // Obtendo as tarefas do banco
     }
 
     // Alternar entre modos de edição

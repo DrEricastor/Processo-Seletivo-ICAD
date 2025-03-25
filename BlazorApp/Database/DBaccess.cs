@@ -30,4 +30,12 @@ public class TarefaService {
             await _context.SaveChangesAsync();
         }
     }
+
+    public async Task<List<TodoItemCompleto>> GetTarefasByUserAsync(Guid userId)
+{
+    return await _context.TodoItems
+        .Where(t => t.User == userId) // Filtra pelo ID do usuário
+        .ToListAsync();
+}
+
 }

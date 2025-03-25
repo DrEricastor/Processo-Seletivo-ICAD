@@ -42,9 +42,8 @@ namespace BlazorApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("User")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("User")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("isDone")
                         .HasColumnType("bit");

@@ -19,16 +19,37 @@ Senha<p />
 <input type="password" @bind="inPassword" /> <p /> <p />
 
 <button @onclick="tryLogin">Fazer Login</button>
+<button @onclick="tryRegister">Criar Conta</button>
+
 @if (!lastAttemptSucessfull) {
-    <p class="text-danger">Credenciais inválidas!</p>
+    <p class="text-danger">Credenciais inválidas! Numero de tentativas até agora: #@tentativas</p>
 }
+
+
 
 @code {
     string inUsername = "";
     string inPassword = "";
     bool lastAttemptSucessfull = true;
+    int tentativas = 0;
 
     // Método chamado ao tentar fazer login
+    async void tryRegister() {
+        var curUser = await _authService.Register(inUsername, inPassword);
+
+        if (curUser != null) {
+            Auth.isAuthd = true;
+            Auth.curUser = curUser;
+
+            // Navegue para a página principal após o login bem-sucedido
+            _navigationManager.NavigateTo("/home");
+        }
+        else {
+            lastAttemptSucessfull = false;
+            tentativas++;
+        }
+    }
+
     async Task tryLogin()
     {
         var usuario = await _authService.Login(inUsername, inPassword);
@@ -46,6 +67,7 @@ Senha<p />
         {
             // Caso as credenciais estejam incorretas
             lastAttemptSucessfull = false;
+            tentativas++;
         }
     }
 
