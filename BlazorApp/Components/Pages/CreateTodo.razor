@@ -2,10 +2,25 @@
 @rendermode InteractiveServer
 @inject TarefaService TarefaService
 
+<PageTitle>Adicionar Tarefa</PageTitle>
+
+<BlazorBootstrap.ConfirmDialog @ref=confirmDialogText />
+
 @if (!Auth.isAuthd) {
     
     <p>Usuário não autentificado!</p>
 } else {
+    @if (taskAdded) {
+        <div class="alert alert-success" role="alert">
+            Tarefa <b>@recentlyAddedTask</b> adicionada! <a href="/todoList" class="alert-link">Confira aqui!</a>
+        </div>
+    }
+    @if (errorAddingTask) {
+        <div class="alert alert-danger" role="alert">
+            Tarefa não adicionada! Assegure-se que ela possui <b>Titulo</b> e <b>Dificuldade</b>
+        </div>
+    }
+    
     <h3>Adicionar nova Tarefa</h3>
 
     <p>Titulo:</p>      <input autofocus class="form-control input-sm" @bind="newTodoTitle"/> <p />
@@ -17,23 +32,37 @@
         <option value="1">Fácil</option>
         <option value="2">Média</option>
         <option value="3">Difícil</option>
-        <option value="4">Muito Difícil</option>
+        <option value="4">Extrema</option>
     </InputSelect> <p></p>
 
     <button class="btn btn-primary" @onclick="addTodo">Adicionar tarefa! </button>
 
     @code {
+        private BlazorBootstrap.ConfirmDialog confirmDialogText;
 
-        
+        bool taskAdded;
+        bool errorAddingTask;
+        string recentlyAddedTask = "";
+
         private List<TodoItemCompleto> todos = new();
-        string newTodoTitle = "";
+        public string newTodoTitle = "";
         string newTodoDesc = "";
         DateTime newTodoDueDate = DateTime.Now;
         Guid newTodoUser =Auth.curUser.Id;
-        string newTodoDificulty = "";
+        string newTodoDificulty = "1";
 
+        async Task spawnConfirmAdd() {
+            var parameters = new Dictionary<string, object>();
+            parameters.Add("Title", newTodoTitle);
+        }
 
         async void addTodo() {
+            if (newTodoTitle == "" || newTodoDificulty == "") {
+                
+                errorAddingTask = true;
+                return;
+            }
+
             await TarefaService.AddTarefaAsync(new TodoItemCompleto{
                 Title = newTodoTitle,
                 Description = newTodoDesc,
@@ -42,6 +71,25 @@
                 Difficulty = newTodoDificulty,
                 isDone = false
             });
+
+            recentlyAddedTask = newTodoTitle;
+            taskAdded = true;
+            errorAddingTask = false;
+            clearNewFields();
+            StateHasChanged();
+            
+        }
+
+        void clearNewFields() {
+            newTodoTitle = "";
+            newTodoDesc = "";
+            newTodoDueDate = DateTime.Now;
+            newTodoUser =Auth.curUser.Id;
+            newTodoDificulty = "1";
+        }
+
+        void update() {
+            StateHasChanged();
         }
     }
 }

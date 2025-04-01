@@ -1,4 +1,7 @@
 ﻿@page "/Home"
+@rendermode InteractiveServer
+@using BlazorBootstrap
+
 
 @if (!Auth.isAuthd) {
     
@@ -9,6 +12,9 @@
 
     <h1>Taskerr</h1>
 
-    <p><i>O seu Hub de Tarefas!</i></p>
-    <p>para a sua segurança, só é possível remover Tarefas que estejam completas!</p>
-    }
+    <p><i>Com o Tasker voce pode:</i></p>
+    <p>✅Organizar suas tarefas do dia a dia</p>
+    <p>✅Programar seus prazos</p>
+    <p>✅Checar seus afazeres a qualquer momento</p>
+    <p>✅Organizar seus finais de semana</p>
+}

@@ -8,6 +8,17 @@
 
 <PageTitle>Login</PageTitle>
 
+@if (!lastLoginAttemptSucessfull) {
+    <div class="alert alert-danger" role="alert">
+            Credenciais inválidas! Numero de tentativas até agora: #@tentativas
+    </div>
+}
+@if (!lastRegisterAttemptSucessfull) {
+    <div class="alert alert-danger" role="alert">
+            Conta não registrada! Já existe uma conta com esse Username
+    </div>
+}
+
 <h1>Taskerr Login</h1>
 
 Faça Login abaixo para acessar suas tarefas. <p />
@@ -21,16 +32,15 @@ Senha<p />
 <button @onclick="tryLogin">Fazer Login</button>
 <button @onclick="tryRegister">Criar Conta</button>
 
-@if (!lastAttemptSucessfull) {
-    <p class="text-danger">Credenciais inválidas! Numero de tentativas até agora: #@tentativas</p>
-}
+
 
 
 
 @code {
     string inUsername = "";
     string inPassword = "";
-    bool lastAttemptSucessfull = true;
+    bool lastLoginAttemptSucessfull = true;
+    bool lastRegisterAttemptSucessfull = true;
     int tentativas = 0;
 
     // Método chamado ao tentar fazer login
@@ -45,8 +55,9 @@ Senha<p />
             _navigationManager.NavigateTo("/home");
         }
         else {
-            lastAttemptSucessfull = false;
+            lastRegisterAttemptSucessfull = false; 
             tentativas++;
+            StateHasChanged();
         }
     }
 
@@ -66,8 +77,9 @@ Senha<p />
         else
         {
             // Caso as credenciais estejam incorretas
-            lastAttemptSucessfull = false;
+            lastLoginAttemptSucessfull = false;
             tentativas++;
+            StateHasChanged();
         }
     }
 

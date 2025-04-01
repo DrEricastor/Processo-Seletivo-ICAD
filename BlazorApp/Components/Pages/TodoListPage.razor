@@ -1,7 +1,10 @@
 ﻿@page "/todoList"
 @rendermode InteractiveServer
 @using System.Globalization
+@using BlazorBootstrap
 @inject TarefaService Tarefas
+
+<PageTitle>Lista de Tarefas</PageTitle>
 
 @if (!Auth.isAuthd) 
 {
@@ -9,7 +12,15 @@
 } 
 else 
 {
+
+    @if (errorDeletingTask) {
+        <div class="alert alert-danger" role="alert">
+            Tarefa não removida! Assegure-se que ela está <b>Completa</b> antes de deleta-la.
+        </div>
+    }
     <h3>Lista de Tarefas</h3>
+
+    
 
     <div class="accordion" id="mainAcc">
         @foreach (var curTodo in tarefas) // Substituindo TodoList.Get() por tarefas do banco de dados
@@ -23,7 +34,12 @@ else
                     <button class="accordion-button collapsed" type="button" 
                             data-bs-toggle="collapse" data-bs-target="#@collapseId"
                             aria-expanded="false" aria-controls="@collapseId">
-                        <input type="checkbox" @bind="curTodo.isDone" /> &nbsp; @curTodo.Title &nbsp; | @retReadableDifficulty(curTodo.Difficulty)
+                        <input type="checkbox" @bind="curTodo.isDone" /> &nbsp; @curTodo.Title <Badge Color="@retDifficultyColor(curTodo.Difficulty)"
+                                Position="Position.Absolute"
+                                Placement="BadgePlacement.TopLeft"
+                                IndicatorType="BadgeIndicatorType.RoundedPill"
+                                VisuallyHiddenText="unread messages"> @retReadableDifficulty(curTodo.Difficulty)
+                            </Badge> &nbsp;
                     </button>
                 </h2>
                 <div id="@collapseId" class="accordion-collapse " 
@@ -42,12 +58,12 @@ else
                             <b>Descrição:&nbsp;</b>   <textarea class="form-control input-lg" style="height:85px" @bind="curTodo.Description"/> <p />
                             <b>Data De Entrega:&nbsp;</b> <input class="form-control input-sm" type="datetime-local" @bind="curTodo.DueDate"/> <p />
                             
-                            <p>Dificuldade:</p> //  <input class="form-control input-sm" @bind="newTodoDificulty"/> <p />
+                            <p><b>Dificuldade:</b></p> //  <input class="form-control input-sm" @bind="newTodoDificulty"/> <p />
                             <InputSelect class="" @bind-Value="curTodo.Difficulty">
                                 <option value="1">Fácil</option>
                                 <option value="2">Média</option>
                                 <option value="3">Difícil</option>
-                                <option value="4">Muito Difícil</option>
+                                <option value="4">Extrema</option>
                             </InputSelect> <p></p>
 
                             <p /><button @onclick="() => SaveTask(curTodo)">Salvar</button> <i>&nbsp;</i>
@@ -64,6 +80,8 @@ else
 @code 
 {
     // Variáveis
+
+    bool errorDeletingTask;
     Dictionary<Guid, bool> editModes = new();
     List<TodoItemCompleto> tarefas = new(); // Lista para armazenar as tarefas do banco de dados.
     
@@ -72,8 +90,18 @@ else
             case "1": return "Fácil";
             case "2": return "Médio";
             case "3": return "Difícil";
-            case "4": return "Muito Difícil";
+            case "4": return "Extrema";
             default: return "não Identificado";
+        }
+    }
+
+    public BlazorBootstrap.BadgeColor retDifficultyColor(string val) {
+        switch(val) {
+            case "1": return BadgeColor.Success;
+            case "2": return BadgeColor.Warning;
+            case "3": return BadgeColor.Danger;
+            case "4": return BadgeColor.Dark;
+            default: return BadgeColor.Info;
         }
     }
     
@@ -111,6 +139,10 @@ else
         {
             await Tarefas.RemoveTarefaAsync(curTodo.Id); // Chama o método de remoção do TarefaService
             tarefas.Remove(curTodo); // Remove da lista local
+            errorDeletingTask = false;
+        }
+        else {
+            errorDeletingTask = true;
         }
     }
 }
