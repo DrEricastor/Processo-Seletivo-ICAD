@@ -31,6 +31,13 @@ public class TarefaService {
         }
     }
 
+    public async Task<List<TodoItemCompleto>> GetTarefasByUserAndTitleAsync(Guid userId, String filter)
+{
+    return await _context.TodoItems
+        .Where(t => t.User == userId).Where(t => t.Title.Contains(filter)) // Filtra pelo ID do usuário
+        .ToListAsync();
+}
+
     public async Task<List<TodoItemCompleto>> GetTarefasByUserAsync(Guid userId)
 {
     return await _context.TodoItems

@@ -21,6 +21,12 @@ else
     <h3>Lista de Tarefas</h3>
 
     
+    <div class="input-group mb-3">
+        <input @bind="filter" type="text" class="form-control" placeholder="Filtrar por título" aria-label="Filtrar por título" aria-describedby="button-addon2">
+        <button @onclick="filteredSearch" class="btn btn-outline-secondary" type="button" id="button-addon2">Filtrar</button>
+        <button @onclick="clearFilter" class="btn btn-outline-secondary" type="button" id="button-addon2">Limpar</button>
+    </div>
+
 
     <div class="accordion" id="mainAcc">
         @foreach (var curTodo in tarefas) // Substituindo TodoList.Get() por tarefas do banco de dados
@@ -80,7 +86,7 @@ else
 @code 
 {
     // Variáveis
-
+    String filter = "";
     bool errorDeletingTask;
     Dictionary<Guid, bool> editModes = new();
     List<TodoItemCompleto> tarefas = new(); // Lista para armazenar as tarefas do banco de dados.
@@ -105,6 +111,15 @@ else
         }
     }
     
+    public async Task filteredSearch() {
+        tarefas = await Tarefas.GetTarefasByUserAndTitleAsync(Auth.curUser.Id, filter);
+        StateHasChanged();
+    }
+
+    public async Task clearFilter() {
+        tarefas = await Tarefas.GetTarefasByUserAndTitleAsync(Auth.curUser.Id, "");
+        StateHasChanged();
+    }
 
     // Método para carregar as tarefas do banco de dados
     protected override async Task OnInitializedAsync()
